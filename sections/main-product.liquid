@@ -87,6 +87,23 @@
 
           {%- for block in section.blocks -%}
             {%- case block.type -%}
+              {%- when 'icon_text' -%}
+                <div class="icon-text-block">
+                  {% if block.settings.icon %}
+                    <img
+                      src="{{ block.settings.icon | file_url }}"
+                      alt="Icon"
+                      class="icon-text-icon"
+                      width="40px"
+                      height="40px"
+                    >
+                  {% endif %}
+                  <p class="icon-text-description">{{ block.settings.text }}</p>
+                </div>
+              {%- when 'custom-block' -%}
+                {% if block.settings['custom-block'] %}
+                  <p><a href="/collections/{{ block.settings.custom-block }}">View Collection</a></p>
+                {% endif %}
               {%- when '@app' -%}
                 {% render block %}
               {%- when 'text' -%}
@@ -726,6 +743,33 @@
   "tag": "section",
   "class": "section",
   "blocks": [
+    {
+      "type": "icon_text",
+      "name": "Icon with Text",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    },
+    {
+      "type": "custom-block",
+      "name": "Custom Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "custom-block",
+          "label": "Write Collection"
+        }
+      ]
+    },
     {
       "type": "@app"
     },

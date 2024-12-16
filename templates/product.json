@@ -83,6 +83,12 @@
           "settings": {
             "share_label": "Share"
           }
+        },
+        "custom-block": {
+          "type": "custom-block",
+        },
+        "icon_text": {
+          "type": "icon_text",
         }
       },
       "block_order": [
@@ -98,7 +104,9 @@
         "collapsible-row-1",
         "collapsible-row-2",
         "collapsible-row-3",
-        "share"
+        "share",
+        "custom-block",
+        "icon_text"
       ],
       "settings": {
         "enable_sticky_info": true,
