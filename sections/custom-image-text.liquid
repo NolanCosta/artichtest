@@ -1,0 +1,113 @@
+{% stylesheet %}
+  .custom-image-text {
+    margin: 20px auto;
+    text-align: center;
+  }
+
+  .blocks-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+
+  .block {
+    flex: 1 1 calc(33.333% - 20px); /* Default for 3 per row */
+    max-width: 300px;
+    text-align: center;
+  }
+
+  .block img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  .block-text {
+    font-size: 16px;
+    color: #333;
+  }
+
+  @media (max-width: 768px) {
+    .block {
+      flex: 1 1 100%;
+    }
+  }
+
+  {% if section.settings.layout == "single_line" %}
+    .blocks-container {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+    }
+    .block {
+      flex: 1 1 auto;
+    }
+  {% else %}
+    .block {
+      flex: 1 1 calc(100% / {{ section.settings.blocks_per_row }} - 20px);
+    }
+  {% endif %}
+{% endstylesheet %}
+
+<div class="custom-image-text">
+  <div class="blocks-container">
+    {% for block in section.blocks %}
+      <div class="block">
+        {% if block.settings.image %}
+          <img
+            src="{{ block.settings.image | file_url }}"
+            alt="Block Image"
+            class="block-image"
+            width="100%"
+            height="auto"
+          >
+        {% endif %}
+        {% if block.settings.text %}
+          <p class="block-text">{{ block.settings.text }}</p>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Image + Text",
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "single_line", "label": "Single Line (Row)" },
+        { "value": "multiple_lines", "label": "Multiple Lines (Rows)" }
+      ],
+      "default": "multiple_lines"
+    },
+    {
+      "type": "number",
+      "id": "blocks_per_row",
+      "label": "Blocks per Row (for Multiple Lines)",
+      "default": 3
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image_text",
+      "name": "Image + Text",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
